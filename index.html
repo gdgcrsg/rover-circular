@@ -422,7 +422,7 @@ function renderCards(data) {
     headers.forEach((h, i) => obj[h] = row[i]);
     const photo = obj["আপনার ছবি"] || "https://via.placeholder.com/90";
     const name = obj["নাম (বাংলায়)"] || "নাম নেই";
-    const formNo = obj["ফরম নম্বর (রোভার ডেন থেকে সরাসরি ভর্তি ফরম সংগ্রহ করে থাকলে ফরমে উপর-বাম কর্ণারে ফরম নম্বর উল্লেখ রয়েছে) ফরম নম্বর না থাকলে এই বক্স খালি রাখুন।"];
+    const formNo = obj["ফরম নম্বর"];
     const mobile = obj["মোবাইল নম্বর"]?.slice(-11);
     const email = obj["Your email"];
     const className = obj["শ্রেণি"];
