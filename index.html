@@ -315,9 +315,32 @@ td { color: #334155; }
   </div>
 </header>
 
-<div style="text-align:center;">
+<div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-bottom:15px;">
+  <!-- Total Badge -->
   <div class="total-badge" id="totalBadge">মোট আবেদন: 0</div>
+
+  <!-- Refresh Button -->
+  <button id="refreshBtn" 
+          style="padding:10px 10px; font-size:14px; border:none; border-radius:45%; margin-top: 18px; background:indigo; color:#fff; cursor:pointer; transition: all 0.3s;">
+    🔄
+  </button>
 </div>
+
+<script>
+  document.getElementById("refreshBtn").addEventListener("click", async () => {
+    // Optional: show loading message
+    document.getElementById("totalBadge").textContent = "Loading...";
+
+    try {
+      await loadData(); // আবার ডেটা লোড করবে
+      alert("✅ Data refreshed successfully!");
+    } catch(err) {
+      alert("❌ Failed to refresh data!");
+      console.error(err);
+    }
+  });
+</script>
+
 
 
 
