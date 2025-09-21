@@ -56,6 +56,8 @@ body { font-family: "Segoe UI", sans-serif; background: #eef2f7; color: #1e293b;
   font-style: italic;
 }
 
+
+
 @keyframes textGlow { 
   0% { text-shadow: 0 0 3px #fff, 0 0 6px #38bdf8; } 
   50% { text-shadow: 0 0 10px #60a5fa, 0 0 20px #38bdf8; } 
@@ -96,6 +98,20 @@ body { font-family: "Segoe UI", sans-serif; background: #eef2f7; color: #1e293b;
   box-shadow: 0 0 8px rgba(59,130,246,0.4);
 }
 
+
+
+.gdgcrsg-dev .gdgcrsg-dev-img {
+  display: inline-block;  
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.gdgcrsg-dev .gdgcrsg-dev-img:hover {
+  transform: translate(90px, -350px) scale(7.2); /* X=30px ডানে, Y=-30px উপরে */
+  box-shadow: 0 6px 18px rgba(59,130,246,0.4);
+}
+
+
+
 /* Cards Container */
 .container {
   display: grid;
@@ -125,7 +141,7 @@ body { font-family: "Segoe UI", sans-serif; background: #eef2f7; color: #1e293b;
   border: 2px solid #3b82f6; margin-bottom: 12px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card img:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(59,130,246,0.4); }
+.card img:hover { transform: scale(2.2); box-shadow: 0 6px 18px rgba(59,130,246,0.4); }
 
 .card h3 { 
   margin: 10px 0 6px; font-size: 1.2rem; color: #0f172a; 
@@ -195,12 +211,14 @@ td { color: #334155; }
 <div style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: #e6f2ff; border: 2px solid #006400; border-radius: 12px; max-width: 320px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); margin-bottom: 33px;">
   
   <!-- Logo + EIIN -->
-  <div style="text-align: center;">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2uoDdiCRQlbsyEYYACg2oAtkXr0VCXFRJi3vsEtKoOy4RA5mqlA04784903v09kSCp3YTV2vzJBsIaK0NnpKdtoVgT8vY4btXjxtfWRhUP-VzFL8KkColwJaTD9Pb9jq3cW_wdrlkx69s9MGDX3VMyjqlZS3xmIJfzLW4tz97eTf7ecDpgP_gnOZDwT8/s1024/1000038009.png" 
-         alt="Gurudayal Govt. College Rover Scout Group Logo" 
-         style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; border: 1px solid #006400;">
-    <p style="margin: -5px 0 0; margin-bottom: -9px; font-size: 5px; color: #004d00;">EIIN-110496</p>
-  </div>
+ <div style="text-align: center;">
+  <img class="center-hover-img" 
+       src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2uoDdiCRQlbsyEYYACg2oAtkXr0VCXFRJi3vsEtKoOy4RA5mqlA04784903v09kSCp3YTV2vzJBsIaK0NnpKdtoVgT8vY4btXjxtfWRhUP-VzFL8KkColwJaTD9Pb9jq3cW_wdrlkx69s9MGDX3VMyjqlZS3xmIJfzLW4tz97eTf7ecDpgP_gnOZDwT8/s1024/1000038009.png" 
+       alt="Gurudayal Govt. College Rover Scout Group Logo" 
+       style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; border: 1px solid #006400;">
+  <p style="margin: -5px 0 0; margin-bottom: -9px; font-size: 5px; color: #004d00;">EIIN-110496</p>
+</div>
+
 
   <!-- Title + Date -->
   <div>
