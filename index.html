@@ -226,7 +226,7 @@ td { color: #334155; }
   <!-- Title + Date -->
   <div>
     <h1 style="margin: 0; font-size: 16px; color: #004d00; font-weight: bold;">Gurudayal Govt. College Rover Scout Group</h1>
-    <p style="margin: 0; font-size: 8px; color: #004d00;">4th October - 1977</p>
+    <p style="margin: 0; font-size: 8px; color: #004d00;">4th November - 1977</p>
   </div>
 </div>
 
@@ -425,7 +425,31 @@ function showProfile(obj, name) {
   
   for (const [key, value] of Object.entries(obj)) {
     if (value && key !== "আপনার ছবি" && !key.includes("জন্ম নিবন্ধন")) {
-      table += `<tr><th>${key}</th><td>${value}</td></tr>`;
+      let displayValue = value;
+      
+      // Detect and convert links, phone numbers, and WhatsApp numbers
+      if (typeof value === 'string') {
+        // Detect URLs
+        if (value.match(/https?:\/\/[^\s]+/)) {
+          displayValue = `<a href="${value}" target="_blank" style="color: #2563eb; text-decoration: none;">${value}</a>`;
+        }
+        // Detect phone numbers (Bangladeshi format)
+        else if (value.match(/(?:\+88)?01[3-9]\d{8}/)) {
+          const cleanNumber = value.replace(/\D/g, '').replace(/^88/, '');
+          displayValue = `<a href="tel:${cleanNumber}" style="color: #2563eb; text-decoration: none;">${value}</a>`;
+        }
+        // Detect WhatsApp numbers (specifically from AO column or any WhatsApp number)
+        else if ((key === "WhatsApp number" || key.includes("WhatsApp") || key.includes("whatsapp")) && value.match(/\d+/)) {
+          const cleanNumber = value.replace(/\D/g, '');
+          displayValue = `<a href="https://wa.me/${cleanNumber}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold;">${value} 💬</a>`;
+        }
+        // Detect email addresses
+        else if (value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+          displayValue = `<a href="mailto:${value}" style="color: #2563eb; text-decoration: none;">${value}</a>`;
+        }
+      }
+      
+      table += `<tr><th>${key}</th><td>${displayValue}</td></tr>`;
     }
   }
   table += "</table>";
@@ -514,4 +538,4 @@ function downloadInfoImg() {
 </script>
 
 </body>
-    </html>
+</html>
