@@ -1083,8 +1083,12 @@ async function downloadProfileImage() {
       throw new Error('ছবির URL পাওয়া যায়নি');
     }
     
-    // ছবি ডাউনলোড ফাংশন কল করুন
-    await downloadImage(imageUrl, `${modalName}_profile_image.jpg`);
+    // ফাইল এক্সটেনশন চেক করুন
+    const fileExtension = getFileExtension(imageUrl);
+    const filename = `${modalName}_profile_image.${fileExtension}`;
+    
+    // উন্নত ডাউনলোড ফাংশন ব্যবহার করুন
+    await advancedDownloadImage(imageUrl, filename);
     
     // সাকসেস মেসেজ
     downloadBtn.textContent = "✅ সফল!";
@@ -1108,42 +1112,85 @@ async function downloadProfileImage() {
   }
 }
 
-// ছবি ডাউনলোড হেল্পার ফাংশন
-function downloadImage(url, filename) {
+// ফাইল এক্সটেনশন বের করার ফাংশন
+function getFileExtension(url) {
+  try {
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname;
+    const extension = pathname.split('.').pop().toLowerCase();
+    return extension || 'jpg'; // ডিফল্ট এক্সটেনশন
+  } catch {
+    return 'jpg'; // ডিফল্ট এক্সটেনশন
+  }
+}
+
+// উন্নত ইমেজ ডাউনলোড ফাংশন
+function advancedDownloadImage(url, filename) {
   return new Promise((resolve, reject) => {
-    // একটি লুকানো anchor এলিমেন্ট তৈরি করুন
+    // প্রথমে fetch API ব্যবহার করে ইমেজ ডেটা নিন
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        // Blob থেকে URL তৈরি করুন
+        const blobUrl = URL.createObjectURL(blob);
+        
+        // একটি লুকানো anchor এলিমেন্ট তৈরি করুন
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = filename;
+        link.style.display = 'none';
+        
+        // DOM এ যোগ করুন
+        document.body.appendChild(link);
+        
+        // ক্লিক ইভেন্ট ট্রিগার করুন
+        link.click();
+        
+        // DOM থেকে রিমুভ করুন
+        document.body.removeChild(link);
+        
+        // Blob URL মুক্ত করুন
+        setTimeout(() => {
+          URL.revokeObjectURL(blobUrl);
+        }, 100);
+        
+        resolve();
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        // যদি fetch ব্যর্থ হয়, তাহলে পুরানো পদ্ধতি ব্যবহার করুন
+        fallbackDownload(url, filename)
+          .then(resolve)
+          .catch(reject);
+      });
+  });
+}
+
+// ফলব্যাক ডাউনলোড ফাংশন
+function fallbackDownload(url, filename) {
+  return new Promise((resolve, reject) => {
     const link = document.createElement('a');
     link.href = url;
     link.download = filename;
     link.style.display = 'none';
     
-    // DOM এ যোগ করুন
+    // download attribute সেট করুন ফোর্স ডাউনলোডের জন্য
+    link.setAttribute('download', filename);
+    link.setAttribute('target', '_blank');
+    
     document.body.appendChild(link);
-    
-    // ক্লিক ইভেন্ট ট্রিগার করুন
     link.click();
-    
-    // DOM থেকে রিমুভ করুন
     document.body.removeChild(link);
     
-    // ছবি লোড হয়েছে কিনা চেক করুন
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    
-    img.onload = function() {
-      resolve();
-    };
-    
-    img.onerror = function() {
-      reject(new Error('ছবি লোড করতে সমস্যা'));
-    };
-    
-    img.src = url;
-    
-    // Timeout সেট করুন
+    // কিছু ব্রাউজারে ডাউনলোড হতে সময় লাগতে পারে
     setTimeout(() => {
-      resolve(); // কিছু ক্ষেত্রে onload কাজ না করলেও resolve করবে
-    }, 3000);
+      resolve();
+    }, 1000);
   });
 }
 
